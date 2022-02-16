@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import { timeElapsed } from '../../libs/timer'
 import { TimerContext } from '../../store'
+import VoteEnd from '../Card/VoteEnd'
 
 const renderer = ({
   hours,
@@ -68,7 +69,13 @@ const Timer = () => {
       <div className="flex flex-col text-center text-4xl font-black text-gray-600">
         <span className="text-xl font-light"> Time Left</span>{' '}
         <span>
-          {hours}:{mins}:{secs}
+          {timerContext?.timeExpired ? (
+            <VoteEnd />
+          ) : (
+            <span>
+              {hours}:{mins}:{secs}
+            </span>
+          )}
         </span>
       </div>
     </>

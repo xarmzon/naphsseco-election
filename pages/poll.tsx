@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ResultCard from '../components/Card/ResultCard'
 import Layout from '../components/layout/Layout'
 import Spinner from '../components/Loader/Spinner'
@@ -9,6 +9,7 @@ import { connectDB } from '../libs/connectDB'
 import { POSTS_CONST } from '../libs/constants'
 import Student from '../schema/Students'
 import Vote from '../schema/Vote'
+import { TimerContext } from '../store'
 
 export interface IResultPage {
   children?: React.ReactNode
@@ -16,6 +17,7 @@ export interface IResultPage {
 }
 
 const ResultPage = ({ votingDataS, children }: IResultPage) => {
+  const timerContext = useContext(TimerContext)
   const [loadingStudent, setLoadingStudent] = useState<boolean>(true)
   const [votingData, setVotingData] = useState<any[]>([])
   useEffect(() => {
