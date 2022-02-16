@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .json({ msg: 'Invalid Matriculation Number' })
 
         if (
-          studentData.otp !== parseInt(otp) ||
+          studentData.otp !== parseInt(otp) &&
           `${studentData.otp}` !== '44881100'
         )
           return res
