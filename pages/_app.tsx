@@ -9,6 +9,7 @@ import { defaultSEO } from '../libs/constants'
 import { Toaster } from 'react-hot-toast'
 import NProgress from 'nprogress'
 import { useRouter } from 'next/router'
+import TimerProvider from '../store'
 
 NProgress.configure({ showSpinner: false })
 
@@ -32,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router])
   return (
-    <>
+    <TimerProvider>
       <DefaultSeo {...defaultSEO} />
       <Component {...pageProps} />
       <Toaster
@@ -40,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           duration: 7000,
         }}
       />
-    </>
+    </TimerProvider>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../components/layout/Layout'
 import Spinner from '../components/Loader/Spinner'
@@ -13,6 +13,8 @@ import Candidate from '../components/Card/Candidate'
 import api, { errorMessage } from '../libs/fechter'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import { TimerContext } from '../store'
+import VoteEnd from '../components/Card/VoteEnd'
 
 export interface IVotingPage {
   children?: React.ReactNode
@@ -33,6 +35,8 @@ export interface IStudentVotes {
 }
 
 const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
+  const timerContext = useContext(TimerContext)
+
   const [loadingStudent, setLoadingStudent] = useState<boolean>(true)
   const [submitting, setSubmitting] = useState<boolean>(false)
   const [submitted, setSubmitted] = useState<boolean>(false)
@@ -77,6 +81,17 @@ const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
     }
     setSubmitting(false)
   }
+  if (timerContext?.timeExpired) {
+    return (
+      <Layout>
+        <div className="flex h-[calc(100vh-150px)] items-center justify-center">
+          <h1 className="text-center text-xl font-bold text-red-600">
+            <VoteEnd />
+          </h1>
+        </div>
+      </Layout>
+    )
+  }
   if (submitted) {
     return (
       <Layout>
@@ -117,7 +132,9 @@ const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
   }
   return (
     <Layout>
-      <Timer />
+      <div className="flex flex-col justify-center">
+        <Timer />
+      </div>
       <form className="p-5" onSubmit={processVote}>
         <div className="text-center">
           <h1 className="my-6 text-xl font-bold text-gray-600">PRESIDENT</h1>
