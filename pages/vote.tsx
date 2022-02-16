@@ -15,6 +15,7 @@ import toast from 'react-hot-toast'
 import Link from 'next/link'
 import { TimerContext } from '../store'
 import VoteEnd from '../components/Card/VoteEnd'
+import { NextSeo } from 'next-seo'
 
 export interface IVotingPage {
   children?: React.ReactNode
@@ -132,6 +133,7 @@ const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
   }
   return (
     <Layout>
+      <NextSeo title="Voting...." />
       <div className="flex flex-col justify-center">
         <Timer />
       </div>
