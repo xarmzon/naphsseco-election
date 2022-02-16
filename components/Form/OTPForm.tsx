@@ -98,7 +98,7 @@ const OTPForm = ({ setShow }: IOTPForm) => {
             value={userData.phone}
             onChange={(e) => handledChange(e.target.name, e.target.value)}
             className="flex-1 flex-shrink-0 border-none outline-none focus:ring-0"
-            type="number"
+            type="tel"
             placeholder="Enter your phone number"
             name="phone"
             id="phone"
