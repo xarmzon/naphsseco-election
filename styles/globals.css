@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .center-auto {
+    @apply mx-auto w-full max-w-6xl;
+  }
+}
+
+#nprogress .bar {
+  @apply bg-primary;
+}
