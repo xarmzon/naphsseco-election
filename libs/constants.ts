@@ -1,5 +1,6 @@
 export const APP_NAME = 'NAPHSSECO ELECTION'
-export const SITE_DESCRIPTION = ''
+export const SITE_DESCRIPTION =
+  'NAPHSSECO ELECTION WEBSITE CREATED BY RASTAXARM'
 
 export const defaultSEO = {
   title: 'Homepage',
