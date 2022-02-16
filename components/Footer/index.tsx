@@ -14,7 +14,7 @@ const Footer = () => {
             target="_blank"
             rel="noreferrer"
           >
-            Rastaarc
+            JP Concept
           </a>
         </p>
       </div>

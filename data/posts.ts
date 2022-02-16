@@ -97,7 +97,7 @@ export const postsData: IData = {
       matric: '19/56EB102',
     },
     {
-      name: 'OSHILEOLURO TEMITOPE J',
+      name: 'OSHINBOLURO TEMITOPE J',
       nick_name: 'BIGGIE MATHS',
       department: 'MATHEMATICS',
       matric: '19/56EB106',
@@ -158,7 +158,7 @@ export const postsData: IData = {
       name: 'OYEDELE ELIJAH A',
       nick_name: 'ELITE',
       department: 'PHYSICS',
-      matric: '19/56ED109',
+      matric: '18/56ED109',
     },
     {
       name: 'OYEGUN VICTOR D',

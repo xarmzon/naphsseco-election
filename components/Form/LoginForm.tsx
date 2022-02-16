@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaUserGraduate } from 'react-icons/fa'
+import { FaUserGraduate, FaUserTag } from 'react-icons/fa'
 import { IoMdKey } from 'react-icons/io'
 
 import api, { errorMessage } from '../../libs/fechter'
@@ -11,6 +11,7 @@ import Spinner from '../Loader/Spinner'
 export interface IUserData {
   matric: string
   otp: string
+  surname: string
 }
 
 export interface ILoginForm {
@@ -22,6 +23,7 @@ const LoginForm = ({ setShow }: ILoginForm) => {
   const [userData, setUserData] = useState<IUserData>({
     matric: '',
     otp: '',
+    surname: '',
   })
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -36,7 +38,11 @@ const LoginForm = ({ setShow }: ILoginForm) => {
   }
   const processOTPForm = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (userData.matric.length >= 8 && /^\d{8}$/.test(userData.otp)) {
+    if (
+      userData.surname.length >= 3 &&
+      userData.matric.length >= 8 &&
+      /^\d{8}$/.test(userData.otp)
+    ) {
       try {
         setLoading(true)
         toast.loading('Loading............')
@@ -71,12 +77,23 @@ const LoginForm = ({ setShow }: ILoginForm) => {
             onChange={(e) => handledChange(e.target.name, e.target.value)}
             className="flex-1 flex-shrink-0 border-none outline-none focus:ring-0"
             type="text"
-            placeholder="Enter your matriculation number"
+            placeholder="Matriculation Number"
             name="matric"
             id="matric"
           />
         </div>
-
+        <div className="form flex items-center space-x-3 rounded-full border-[2px] py-2 px-3">
+          <FaUserTag className="ml-3 h-5 w-5 text-primary" />
+          <input
+            value={userData.surname}
+            onChange={(e) => handledChange(e.target.name, e.target.value)}
+            className="flex-1 flex-shrink-0 border-none outline-none focus:ring-0"
+            type="text"
+            placeholder="Your Surname"
+            name="surname"
+            id="surname"
+          />
+        </div>
         <div className="form flex items-center space-x-3 rounded-full border-[2px] py-2 px-3">
           <IoMdKey className="ml-3 h-5 w-5 text-primary" />
           <input
@@ -84,7 +101,7 @@ const LoginForm = ({ setShow }: ILoginForm) => {
             onChange={(e) => handledChange(e.target.name, e.target.value)}
             className="flex-1 flex-shrink-0 border-none outline-none focus:ring-0"
             type="number"
-            placeholder="Enter your OTP"
+            placeholder="Enter the OTP"
             name="otp"
             id="otp"
           />
@@ -97,17 +114,17 @@ const LoginForm = ({ setShow }: ILoginForm) => {
             type="submit"
           >
             {loading && <Spinner />}
-            <span>Vote</span>
+            <span>Login</span>
           </button>
         </div>
-        <div className="flex cursor-pointer items-center justify-center">
+        {/* <div className="flex cursor-pointer items-center justify-center">
           <span
             className="text-yellow-600"
             onClick={() => setShow((prev) => 'otp')}
           >
             Request OTP
           </span>
-        </div>
+        </div> */}
         <span className="absolute -top-12 -left-6  h-12 w-12 rounded-full bg-gradient-to-bl from-primary/20 to-yellow-600/10" />
         {/* <span className="absolute -bottom-4 -right-4  h-12 w-12 rounded-full bg-gradient-to-bl from-primary/20 to-yellow-600/10" /> */}
         <span className="absolute top-1/2 left-1/2 -z-0 h-48 w-48  rounded-full bg-gradient-to-bl from-primary/10 to-yellow-600/10" />

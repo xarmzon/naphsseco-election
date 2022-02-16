@@ -9,7 +9,7 @@ import OTPForm from '../Form/OTPForm'
 export type TShow = 'otp' | 'login'
 
 const Hero = () => {
-  const [show, setShow] = useState<TShow>('otp')
+  const [show, setShow] = useState<TShow>('login')
   const timerContext = useContext(TimerContext)
 
   return (

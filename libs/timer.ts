@@ -1,5 +1,5 @@
-export const timeElapsed = (countD = 'Feb 17, 2022, 22:20:00') => {
-  const countdown = new Date(countD).getTime()
+const countdown = new Date('Feb 17, 2022, 23:20:00').getTime()
+export const timeElapsed = () => {
   const now = new Date().getTime()
   const distance = countdown - now
 

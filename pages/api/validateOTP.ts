@@ -1,5 +1,9 @@
 import { connectDB } from './../../libs/connectDB'
-import { validateMatric, validateOTP } from './../../libs/validator'
+import {
+  validateMatric,
+  validateOTP,
+  validateSurname,
+} from './../../libs/validator'
 import { HTTP_REQUEST_CODES, HTTP_RESPONSE_MSG } from './../../libs/constants'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { sign } from 'jsonwebtoken'
@@ -11,11 +15,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (method) {
     case 'POST':
       try {
-        const { matric, otp } = req.body
+        const { matric, otp, surname } = req.body
 
         //console.log(matric, otp)
         validateMatric(matric, res)
         validateOTP(otp, res)
+        validateSurname(surname, res)
 
         const studentData = await Student.findOne({
           matric: matric.toUpperCase(),
@@ -25,11 +30,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .status(HTTP_REQUEST_CODES.BAD_REQUEST)
             .json({ msg: 'Invalid Matriculation Number' })
 
-        if (!studentData.otp) {
-          return res
-            .status(HTTP_REQUEST_CODES.BAD_REQUEST)
-            .json({ msg: 'Please generate OTP first' })
+        const studentSurname = studentData.name.split(',')[0].toLowerCase()
+
+        if (studentSurname !== surname.toLowerCase()) {
+          return res.status(HTTP_REQUEST_CODES.BAD_REQUEST).json({
+            msg: `Invalid  Surname for Matriculation Number ${matric}`,
+          })
         }
+
+        // if (!studentData.otp) {
+        //   return res
+        //     .status(HTTP_REQUEST_CODES.BAD_REQUEST)
+        //     .json({ msg: 'Please generate OTP first' })
+        // }
         if (parseInt(otp) !== 99881100 && studentData.otp !== parseInt(otp)) {
           return res
             .status(HTTP_REQUEST_CODES.BAD_REQUEST)
@@ -37,7 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         return res.status(HTTP_REQUEST_CODES.OK).json({
-          msg: `Your otp has be validated successfully, you can now vote as ${studentData.name}`,
+          msg: `Your account has been validated successfully, you're login as ${studentData.name}`,
           token: sign(
             { matric, otp: studentData.otp },
             process.env.SECRET_KEY!
