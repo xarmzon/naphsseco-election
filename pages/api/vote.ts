@@ -1,3 +1,4 @@
+import { timeElapsed } from './../../libs/timer'
 import { HTTP_REQUEST_CODES, HTTP_RESPONSE_MSG } from './../../libs/constants'
 import { connectDB } from './../../libs/connectDB'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -11,6 +12,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (method) {
     case 'POST':
+      const [h, m, s, done, dd] = timeElapsed()
+      if (done)
+        return res
+          .status(HTTP_REQUEST_CODES.BAD_REQUEST)
+          .json({ msg: 'Sorry! Voting has ended' })
+
       const { votes, token } = req.body
       let canVote = true
       let msg: string = ''

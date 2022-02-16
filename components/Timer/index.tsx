@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
+import { timeElapsed } from '../../libs/timer'
 import { TimerContext } from '../../store'
 
 const renderer = ({
@@ -30,15 +31,47 @@ const renderer = ({
 
 const Timer = () => {
   const timerContext = useContext(TimerContext)
+  const [hours, setHours] = useState<number>(0)
+  const [mins, setMins] = useState<number>(0)
+  const [secs, setSecs] = useState<number>(0)
+
+  useEffect(() => {
+    var inter = setInterval(() => {
+      const [hours, minutes, seconds, done, distance] = timeElapsed()
+      timerContext?.setTimeExpired(done as boolean)
+      if (done) clearInterval(inter)
+      else {
+        setHours((prev) => {
+          const t = hours as number
+          return prev !== t ? t : prev
+        })
+        setMins((prev) => {
+          const t = minutes as number
+          return prev !== t ? t : prev
+        })
+        setSecs(seconds as number)
+      }
+    }, 1000)
+    // if (timerContext?.timeExpired) clearInterval(inter)
+  }, [timerContext])
+
   return (
-    <Countdown
-      //   date={new Date(2022, 2, 16, 17, 0, 0, 0)}
-      date={new Date(2022, 2, 16, 7, 28, 0, 0)}
-      onComplete={() => timerContext?.setTimeExpired(true)}
-      autoStart
-      renderer={renderer}
-      className="text-center"
-    />
+    <>
+      {/* <Countdown
+        //   date={new Date(2022, 2, 16, 17, 0, 0, 0)}
+        date={1647426960000}
+        onComplete={() => timerContext?.setTimeExpired(true)}
+        renderer={renderer}
+        className="text-center"
+      /> */}
+
+      <div className="flex flex-col text-center text-4xl font-black text-gray-600">
+        <span className="text-xl font-light"> Time Left</span>{' '}
+        <span>
+          {hours}:{mins}:{secs}
+        </span>
+      </div>
+    </>
   )
 }
 
