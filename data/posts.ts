@@ -19,7 +19,7 @@ export interface IData {
   WELFARE_SECRETARY: IDataObject[]
   FINANCIAL_SECRETARY: IDataObject[]
   PRO: IDataObject[]
-  SRC: ISRCData[]
+  SRC: IDataObject[]
 }
 
 export const postsData: IData = {
@@ -85,118 +85,93 @@ export const postsData: IData = {
   ],
   SRC: [
     {
+      name: 'OLANSILE SAMAD O',
+      nick_name: 'COACH',
       department: 'MATHEMATICS',
-      candidates: [
-        {
-          name: 'OLANSILE SAMAD O',
-          nick_name: 'COACH',
-          department: 'MATHEMATICS',
-          matric: '18/56EB082',
-        },
-        {
-          name: 'OLUWATAYO TEMILOLUWA',
-          nick_name: 'TEMMY',
-          department: 'MATHEMATICS',
-          matric: '19/56EB102',
-        },
-        {
-          name: 'OSHILEOLURO TEMITOPE J',
-          nick_name: 'BIGGIE MATHS',
-          department: 'MATHEMATICS',
-          matric: '19/56EB106',
-        },
-        {
-          name: 'SAMBO ADBULAKEEM O',
-          nick_name: 'SAMBO',
-          department: 'MATHEMATICS',
-          matric: '19/56EB120',
-        },
-      ],
+      matric: '18/56EB082',
     },
     {
+      name: 'OLUWATAYO TEMILOLUWA',
+      nick_name: 'TEMMY',
+      department: 'MATHEMATICS',
+      matric: '19/56EB102',
+    },
+    {
+      name: 'OSHILEOLURO TEMITOPE J',
+      nick_name: 'BIGGIE MATHS',
+      department: 'MATHEMATICS',
+      matric: '19/56EB106',
+    },
+    {
+      name: 'SAMBO ADBULAKEEM O',
+      nick_name: 'SAMBO',
+      department: 'MATHEMATICS',
+      matric: '19/56EB120',
+    },
+
+    {
+      name: 'BOATENG SARAH T',
+      nick_name: 'BOATENG',
       department: 'CHEMISTRY',
-      candidates: [
-        {
-          name: 'BOATENG SARAH T',
-          nick_name: 'BOATENG',
-          department: 'CHEMISTRY',
-          matric: '18/56EE087',
-        },
-        {
-          name: 'ODEYEMI OLUWASEGUN',
-          nick_name: 'SEGUN',
-          department: 'CHEMISTRY',
-          matric: '19/56EE142',
-        },
-      ],
+      matric: '18/56EE087',
     },
     {
+      name: 'ODEYEMI OLUWASEGUN',
+      nick_name: 'SEGUN',
+      department: 'CHEMISTRY',
+      matric: '19/56EE142',
+    },
+
+    {
+      name: 'USMAN SODEEQ G.',
+      nick_name: 'SAUCEKID',
       department: 'GEOLOGY',
-      candidates: [
-        {
-          name: 'USMAN SODEEQ G.',
-          nick_name: 'SAUCEKID',
-          department: 'GEOLOGY',
-          matric: '18/56EA069',
-        },
-        {
-          name: 'ABULRAHAMAN KEHINDE',
-          nick_name: 'MAYI',
-          department: 'GEOLOGY',
-          matric: '19/56EA029',
-        },
-      ],
+      matric: '18/56EA069',
     },
     {
+      name: 'ABULRAHAMAN KEHINDE',
+      nick_name: 'MAYI',
+      department: 'GEOLOGY',
+      matric: '19/56EA029',
+    },
+
+    {
+      name: 'OLABODE K AZEEZAT',
+      nick_name: 'ZHEE',
       department: 'ICH',
-      candidates: [
-        {
-          name: 'OLABODE K AZEEZAT',
-          nick_name: 'ZHEE',
-          department: 'ICH',
-          matric: '18/56EF064',
-        },
-        {
-          name: 'NWAOGU BETTY AMARACHI',
-          nick_name: 'GALENA',
-          department: 'ICH',
-          matric: '19/56EF004',
-        },
-        {
-          name: 'ANINURE TOSIN F',
-          nick_name: 'FAYTH',
-          department: 'ICH',
-          matric: '19/56EF029',
-        },
-      ],
+      matric: '18/56EF064',
     },
     {
+      name: 'NWAOGU BETTY AMARACHI',
+      nick_name: 'GALENA',
+      department: 'ICH',
+      matric: '19/56EF004',
+    },
+    {
+      name: 'ANINURE TOSIN F',
+      nick_name: 'FAYTH',
+      department: 'ICH',
+      matric: '19/56EF029',
+    },
+
+    {
+      name: 'OYEDELE ELIJAH A',
+      nick_name: 'ELITE',
       department: 'PHYSICS',
-      candidates: [
-        {
-          name: 'OYEDELE ELIJAH A',
-          nick_name: 'ELITE',
-          department: 'PHYSICS',
-          matric: '19/56ED109',
-        },
-        {
-          name: 'OYEGUN VICTOR D',
-          nick_name: 'VICTOR',
-          department: 'PHYSICS',
-          matric: '19/56ED113',
-        },
-      ],
+      matric: '19/56ED109',
     },
     {
+      name: 'OYEGUN VICTOR D',
+      nick_name: 'VICTOR',
+      department: 'PHYSICS',
+      matric: '19/56ED113',
+    },
+
+    {
+      name: 'BAGBANSORO FARUQ K',
+      nick_name: 'BAGBANSORO',
       department: 'STATISTICS',
-      candidates: [
-        {
-          name: 'BAGBANSORO FARUQ K',
-          nick_name: 'BAGBANSORO',
-          department: 'STATISTICS',
-          matric: '19/56EG055',
-        },
-      ],
+      matric: '19/56EG055',
     },
   ],
 }

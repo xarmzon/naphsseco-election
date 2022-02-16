@@ -59,9 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             )
 
             postsData.SRC.forEach(async (d) => {
-              await Vote.create(
-                d.candidates.map((d) => ({ ...d, post: POSTS_CONST.SRC }))
-              )
+              await Vote.create({ ...d, post: POSTS_CONST.SRC })
             })
 
             return res.status(HTTP_REQUEST_CODES.CREATED).json({
