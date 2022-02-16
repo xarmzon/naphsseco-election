@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import Layout from '../../components/layout/Layout'
 import api, { errorMessage } from '../../libs/fechter'
 import readXlsxFile from 'read-excel-file'
+import { NextSeo } from 'next-seo'
 
 const InsertUsers = () => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -52,6 +53,7 @@ const InsertUsers = () => {
 
   return (
     <Layout>
+      <NextSeo title="Admin" />
       <div className="flex h-[calc(100vh-180px)] flex-col items-center justify-center space-y-7">
         <button
           disabled={loading}
