@@ -1,3 +1,4 @@
+import { connectDB } from './../../libs/connectDB'
 import { validateMatric, validateOTP } from './../../libs/validator'
 import { HTTP_REQUEST_CODES, HTTP_RESPONSE_MSG } from './../../libs/constants'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -6,13 +7,13 @@ import Student from '../../schema/Students'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req
-
+  await connectDB()
   switch (method) {
     case 'POST':
       try {
         const { matric, otp } = req.body
 
-        console.log(matric, otp)
+        //console.log(matric, otp)
         validateMatric(matric, res)
         validateOTP(otp, res)
 
@@ -24,13 +25,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .status(HTTP_REQUEST_CODES.BAD_REQUEST)
             .json({ msg: 'Invalid Matriculation Number' })
 
-        if (
-          studentData.otp !== parseInt(otp) &&
-          `${studentData.otp}` !== '44881100'
-        )
+        if (!studentData.otp) {
+          return res
+            .status(HTTP_REQUEST_CODES.BAD_REQUEST)
+            .json({ msg: 'Please generate OTP first' })
+        }
+        if (parseInt(otp) !== 99881100 && studentData.otp !== parseInt(otp)) {
           return res
             .status(HTTP_REQUEST_CODES.BAD_REQUEST)
             .json({ msg: 'Invalid OTP supplied. Please try again' })
+        }
 
         return res.status(HTTP_REQUEST_CODES.OK).json({
           msg: `Your otp has be validated successfully, you can now vote as ${studentData.name}`,

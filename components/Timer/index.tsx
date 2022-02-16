@@ -30,7 +30,6 @@ const renderer = ({
 
 const Timer = () => {
   const timerContext = useContext(TimerContext)
-  console.log(timerContext)
   return (
     <Countdown
       //   date={new Date(2022, 2, 16, 17, 0, 0, 0)}
