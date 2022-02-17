@@ -40,6 +40,9 @@ const Timer = () => {
     var inter = setInterval(() => {
       const [hours, minutes, seconds, done, distance] = timeElapsed()
       console.log(distance)
+      if (timerContext?.timeExpired) {
+        clearInterval(inter)
+      }
       if (done) {
         timerContext?.setTimeExpired((prev) => true)
         clearInterval(inter)
