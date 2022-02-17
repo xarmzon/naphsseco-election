@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const studentSurname = s[0].toLowerCase()
 
-        console.log(s, s[0])
+        console.log(s, s[0], matric)
 
         if (studentSurname !== surname.toLowerCase()) {
           return res.status(HTTP_REQUEST_CODES.BAD_REQUEST).json({
