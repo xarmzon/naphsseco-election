@@ -75,7 +75,7 @@ const LoginForm = ({ setShow }: ILoginForm) => {
           <input
             value={userData.matric}
             onChange={(e) => handledChange(e.target.name, e.target.value)}
-            className="flex-1 flex-shrink-0 border-none outline-none focus:ring-0"
+            className="flex-1 flex-shrink-0 border-none bg-transparent outline-none focus:ring-0"
             type="text"
             placeholder="Matriculation Number"
             name="matric"
@@ -87,7 +87,7 @@ const LoginForm = ({ setShow }: ILoginForm) => {
           <input
             value={userData.surname}
             onChange={(e) => handledChange(e.target.name, e.target.value)}
-            className="flex-1 flex-shrink-0 border-none outline-none focus:ring-0"
+            className="flex-1 flex-shrink-0 border-none bg-transparent outline-none focus:ring-0"
             type="text"
             placeholder="Your Surname"
             name="surname"
@@ -99,7 +99,7 @@ const LoginForm = ({ setShow }: ILoginForm) => {
           <input
             value={userData.otp}
             onChange={(e) => handledChange(e.target.name, e.target.value)}
-            className="flex-1 flex-shrink-0 border-none outline-none focus:ring-0"
+            className="flex-1 flex-shrink-0 border-none bg-transparent outline-none focus:ring-0"
             type="number"
             placeholder="Enter the OTP"
             name="otp"
