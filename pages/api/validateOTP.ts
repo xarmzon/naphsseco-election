@@ -29,9 +29,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return res
             .status(HTTP_REQUEST_CODES.BAD_REQUEST)
             .json({ msg: 'Invalid Matriculation Number' })
-        
-        const s = /,/.test(studentData.name) ? studentData.name.split(','): studentData.name.split()
+
+        const s = studentData.name.includes(',')
+          ? studentData.name.split(',')
+          : studentData.name.split(' ')
+
         const studentSurname = s[0].toLowerCase()
+
+        console.log(s, s[0])
 
         if (studentSurname !== surname.toLowerCase()) {
           return res.status(HTTP_REQUEST_CODES.BAD_REQUEST).json({
