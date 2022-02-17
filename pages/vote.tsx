@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import Layout from '../components/layout/Layout'
 import Spinner from '../components/Loader/Spinner'
 import Timer from '../components/Timer'
 import { GetServerSideProps } from 'next'
 import { connectDB } from '../libs/connectDB'
 import Vote from '../schema/Vote'
-import { JwtPayload, verify } from 'jsonwebtoken'
+import { verify } from 'jsonwebtoken'
 import Student from '../schema/Students'
-import { DEPARTMENTS, POSTS_CONST } from '../libs/constants'
+import { POSTS_CONST } from '../libs/constants'
 import Candidate from '../components/Card/Candidate'
 import api, { errorMessage } from '../libs/fechter'
 import toast from 'react-hot-toast'
@@ -322,34 +321,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const pro = votingData.filter((d) => d.post === POSTS_CONST.PRO)
 
       const src = votingData.filter((d) => d.post === POSTS_CONST.SRC)
-
-      //   const src = [
-      //     votingData.filter(
-      //       (d) =>
-      //         d.post === POSTS_CONST.SRC &&
-      //         d.department === DEPARTMENTS.MATHEMATICS
-      //     ),
-      //     votingData.filter(
-      //       (d) =>
-      //         d.post === POSTS_CONST.SRC && d.department === DEPARTMENTS.CHEMISTRY
-      //     ),
-      //     votingData.filter(
-      //       (d) =>
-      //         d.post === POSTS_CONST.SRC && d.department === DEPARTMENTS.GEOLOGY
-      //     ),
-      //     votingData.filter(
-      //       (d) => d.post === POSTS_CONST.SRC && d.department === DEPARTMENTS.ICH
-      //     ),
-      //     votingData.filter(
-      //       (d) =>
-      //         d.post === POSTS_CONST.SRC && d.department === DEPARTMENTS.PHYSICS
-      //     ),
-      //     votingData.filter(
-      //       (d) =>
-      //         d.post === POSTS_CONST.SRC &&
-      //         d.department === DEPARTMENTS.STATISTICS
-      //     ),
-      //   ]
 
       votingData = [president, genSec, aGenSec, welfare, fin, pro, src]
     }
