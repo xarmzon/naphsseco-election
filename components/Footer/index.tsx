@@ -10,11 +10,11 @@ const Footer = () => {
           Crafted and Developed by{' '}
           <a
             className="inline-block text-yellow-600 hover:text-yellow-700"
-            href={RASTAARC.LINKEDIN}
+            href={RASTAARC.GITHUB}
             target="_blank"
             rel="noreferrer"
           >
-            JP Concept
+            Rastaarc
           </a>
         </p>
       </div>

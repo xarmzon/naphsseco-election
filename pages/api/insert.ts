@@ -21,47 +21,52 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           try {
             await Vote.deleteMany({})
 
-            await Vote.create(
-              postsData.PRESIDENT.map((d) => ({
-                ...d,
-                post: POSTS_CONST.PRESIDENT,
-              }))
-            )
-            await Vote.create(
-              postsData.GENERAL_SECRETARY.map((d) => ({
-                ...d,
-                post: POSTS_CONST.GENERAL_SECRETARY,
-              }))
-            )
-            await Vote.create(
-              postsData.ASST_GENERAL_SECRETARY.map((d) => ({
-                ...d,
-                post: POSTS_CONST.ASST_GENERAL_SECRETARY,
-              }))
-            )
-            await Vote.create(
-              postsData.WELFARE_SECRETARY.map((d) => ({
-                ...d,
-                post: POSTS_CONST.WELFARE_SECRETARY,
-              }))
-            )
-            await Vote.create(
-              postsData.FINANCIAL_SECRETARY.map((d) => ({
-                ...d,
-                post: POSTS_CONST.FINANCIAL_SECRETARY,
-              }))
-            )
-            await Vote.create(
-              postsData.PRO.map((d) => ({
-                ...d,
-                post: POSTS_CONST.PRO,
-              }))
-            )
+            // const data = [
+            //   ...postsData.PRESIDENT.map((d) => ({
+            //     ...d,
+            //     post: POSTS_CONST.PRESIDENT,
+            //   })),
+            //   ...postsData.GENERAL_SECRETARY.map((d) => ({
+            //     ...d,
+            //     post: POSTS_CONST.GENERAL_SECRETARY,
+            //   })),
+            //   postsData.ASST_GENERAL_SECRETARY.map((d) => ({
+            //     ...d,
+            //     post: POSTS_CONST.ASST_GENERAL_SECRETARY,
+            //   })),
+            //   ...postsData.WELFARE_SECRETARY.map((d) => ({
+            //     ...d,
+            //     post: POSTS_CONST.WELFARE_SECRETARY,
+            //   })),
+            //   ...postsData.FINANCIAL_SECRETARY.map((d) => ({
+            //     ...d,
+            //     post: POSTS_CONST.FINANCIAL_SECRETARY,
+            //   })),
+            //   postsData.PRO.map((d) => ({
+            //     ...d,
+            //     post: POSTS_CONST.PRO,
+            //   })),
+            //   ...postsData.SRC.map((d) => ({
+            //     ...d,
+            //     post: POSTS_CONST.SRC,
+            //   })),
+            // ]
+            const data = Object.keys(postsData)
+              .map((post) => {
+                return postsData[post as keyof typeof postsData].map((data) => {
+                  return {
+                    ...data,
+                    post,
+                  }
+                })
+              })
+              .reduce((prev, post) => {
+                prev.push(...post)
+                return prev
+              }, [])
 
-            postsData.SRC.forEach(async (d) => {
-              await Vote.create({ ...d, post: POSTS_CONST.SRC })
-            })
-
+            const createdData = await Vote.create(data)
+            console.log(createdData)
             return res.status(HTTP_REQUEST_CODES.CREATED).json({
               msg: 'CANDIDATES INSERTED SUCCESSFULLY',
             })
@@ -74,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
           break
         case 'students':
-          const { students } = req.body
+          const { students, deleteOld = false } = req.body
 
           if (!students)
             return res
@@ -82,16 +87,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               .json({ msg: HTTP_RESPONSE_MSG.BAD_REQUEST })
 
           try {
-            await Student.deleteMany({})
+            console.log(students)
+            deleteOld && (await Student.deleteMany({}))
 
             const studentsData = students.map((d: any) => ({
               matric: d[0].toUpperCase(),
               name: d[1],
             }))
 
-            studentsData.forEach(async (d: any) => {
-              await Student.create(d)
-            })
+            console.log(studentsData)
+            // await Student.create(studentsData)
+
             return res.status(HTTP_REQUEST_CODES.CREATED).json({
               msg: 'STUDENTS INSERTED SUCCESSFULLY',
             })

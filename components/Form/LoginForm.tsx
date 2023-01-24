@@ -100,7 +100,8 @@ const LoginForm = ({ setShow }: ILoginForm) => {
             value={userData.otp}
             onChange={(e) => handledChange(e.target.name, e.target.value)}
             className="flex-1 flex-shrink-0 border-none bg-transparent outline-none focus:ring-0"
-            type="number"
+            type="text"
+            inputMode="numeric"
             placeholder="Enter the OTP"
             name="otp"
             id="otp"

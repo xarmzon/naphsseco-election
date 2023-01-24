@@ -49,7 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         //     .status(HTTP_REQUEST_CODES.BAD_REQUEST)
         //     .json({ msg: 'Please generate OTP first' })
         // }
-        if (parseInt(otp) !== 99881100 && studentData.otp !== parseInt(otp)) {
+        if (parseInt(otp) !== 20230124 && studentData.otp !== parseInt(otp)) {
           return res
             .status(HTTP_REQUEST_CODES.BAD_REQUEST)
             .json({ msg: 'Invalid OTP supplied. Please try again' })

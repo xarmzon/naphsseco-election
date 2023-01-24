@@ -34,7 +34,10 @@ const InsertUsers = () => {
     try {
       toast.loading('Loading..........')
       setLoading(true)
+      console.log('before')
+      console.log(studentsData[0])
       const sData = await readXlsxFile(studentsData[0])
+      console.log(sData)
       const {
         data: { msg },
       } = await api.post('insert', {
@@ -91,7 +94,7 @@ const InsertUsers = () => {
             <div>
               <input
                 disabled={loading}
-                className="rounded-lg bg-primary px-5 py-2 text-white "
+                className="cursor-pointer rounded-lg bg-primary px-5 py-2 text-white"
                 onChange={(e) => setStudentsData(e.target.files)}
                 type="submit"
                 value="Upload Students"

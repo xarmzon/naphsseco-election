@@ -33,7 +33,7 @@ export const HTTP_RESPONSE_MSG = {
 export const navLinks = []
 
 export const RASTAARC = {
-  GITHUB: 'https://www.github.com/rastaarc',
+  GITHUB: 'https://www.github.com/xarmzon',
   TWITTER: 'https://www.twitter.com/rastaarcl',
   LINKEDIN: 'https://www.linkedin.com/in/rastaxarm',
 }

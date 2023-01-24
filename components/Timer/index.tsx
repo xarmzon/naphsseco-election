@@ -37,7 +37,7 @@ const Timer = () => {
   const [secs, setSecs] = useState<number>(0)
 
   useEffect(() => {
-    var inter = setInterval(() => {
+    let inter = setInterval(() => {
       const [hours, minutes, seconds, done, distance] = timeElapsed()
       console.log(distance)
       if (timerContext?.timeExpired) {
@@ -59,6 +59,9 @@ const Timer = () => {
       }
     }, 1000)
     // if (timerContext?.timeExpired) clearInterval(inter)
+    return () => {
+      clearInterval(inter)
+    }
   }, [timerContext])
 
   return (

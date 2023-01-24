@@ -6,7 +6,7 @@ export interface IStudent extends IDataObject {
   otp: number
 }
 
-const studentScheme = new Schema<IStudent>(
+const studentSchema = new Schema<IStudent>(
   {
     matric: {
       type: String,
@@ -35,6 +35,6 @@ const studentScheme = new Schema<IStudent>(
   }
 )
 
-const Student = models.Student || model<IStudent>('Student', studentScheme)
+const Student = models.Student || model<IStudent>('Student', studentSchema)
 
 export default Student

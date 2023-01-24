@@ -12,7 +12,7 @@ interface IProvider {
 }
 
 const TimerProvider = ({ children }: IProvider) => {
-  const [timeExpired, setTimeExpired] = useState<boolean>(true)
+  const [timeExpired, setTimeExpired] = useState<boolean>(false)
 
   return (
     <TimerContext.Provider value={{ timeExpired, setTimeExpired }}>
