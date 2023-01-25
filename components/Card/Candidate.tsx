@@ -6,14 +6,9 @@ import { TCandidate } from '../../pages/vote'
 export interface ICandidate {
   candidate: TCandidate
   type?: 'radio' | 'checkbox'
-  voteCandidate: (matric: string) => void
 }
 
-const Candidate = ({
-  voteCandidate,
-  candidate,
-  type = 'radio',
-}: ICandidate) => {
+const Candidate = ({ candidate, type = 'radio' }: ICandidate) => {
   return (
     <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center space-y-7 bg-gradient-to-tr from-slate-100 to-primary/10 p-5 text-center shadow-lg">
       <div>
@@ -33,7 +28,6 @@ const Candidate = ({
         </h1>
         <p className="text-xs text-gray-400">{candidate.department}</p>
         <input
-          onChange={(e) => voteCandidate(candidate.matric)}
           type={type}
           className="h-6 w-6 text-primary ring-primary focus:ring-primary"
           value={candidate.matric}

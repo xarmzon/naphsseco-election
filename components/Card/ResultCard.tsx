@@ -8,11 +8,11 @@ export interface IResultCard {
 
 const ResultCard = ({ candidate }: IResultCard) => {
   return (
-    <div className="flex flex-col items-center justify-center space-y-7 bg-gradient-to-tr from-slate-100 to-primary/10 p-5 text-center shadow-lg">
+    <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center space-y-7 bg-gradient-to-tr from-slate-100 to-primary/10 p-5 text-center shadow-lg">
       <div>
         <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full shadow">
           <Image
-            src={`/images/${candidate.matric.split('/').join('-')}.png`}
+            src={`/images/${candidate.matric.split('/').join('-')}.jpg`}
             layout="fill"
             objectFit="cover"
             alt={`${candidate.name} image`}

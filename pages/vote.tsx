@@ -54,7 +54,6 @@ const VotingPage = ({
   const [student, setStudent] = useState<TStudent>(() =>
     JSON.parse(studentData)
   )
-  const [studentVotes, setStudentVotes] = useState<string[]>([])
 
   useEffect(() => {
     if (!canVote) {
@@ -73,7 +72,6 @@ const VotingPage = ({
   }, [studentData])
   const processVote = async (e: React.FormEvent) => {
     e.preventDefault()
-    // console.log(studentVotes)
     const formData = new FormData(e.target as HTMLFormElement)
     const parsedFormData: string[] = []
     for (let key of formData.keys()) {
@@ -166,13 +164,9 @@ const VotingPage = ({
             Object.keys(votingData).map((post) => (
               <div key={post}>
                 <h1 className="my-6 text-xl font-bold text-gray-600">{post}</h1>
-                <div className="flex flex-col gap-5 md:flex-row md:flex-wrap">
+                <div className="flex flex-col gap-5 md:flex-row md:flex-wrap md:justify-center">
                   {votingData[post].map((candidate) => (
-                    <Candidate
-                      key={candidate.name}
-                      voteCandidate={(m) => {}}
-                      candidate={candidate}
-                    />
+                    <Candidate key={candidate.name} candidate={candidate} />
                   ))}
                 </div>
               </div>
@@ -227,17 +221,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     votingData = await Vote.find()
 
     votingData = votingData.reduce((prev, data) => {
+      const details = {
+        name: data.name,
+        matric: data.matric,
+        nick_name: data.nick_name,
+        department: data.department,
+        post: data.post,
+      }
       if (Object.keys(prev).includes(data.post)) {
-        const details = {
-          name: data.name,
-          matric: data.matric,
-          nick_name: data.nick_name,
-          department: data.department,
-          post: data.post,
-        }
         prev[data.post].push(details)
       } else {
-        prev[data.post] = [data]
+        prev[data.post] = [details]
       }
       return prev
     }, {})

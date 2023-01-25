@@ -6,20 +6,23 @@ import Layout from '../components/layout/Layout'
 import Spinner from '../components/Loader/Spinner'
 import Timer from '../components/Timer'
 import { connectDB } from '../libs/connectDB'
-import { POSTS_CONST } from '../libs/constants'
-import Student from '../schema/Students'
 import Vote from '../schema/Vote'
-import { TimerContext } from '../store'
+import { TCandidate } from './vote'
 
 export interface IResultPage {
-  children?: React.ReactNode
   votingDataS: any
 }
 
-const ResultPage = ({ votingDataS, children }: IResultPage) => {
-  const timerContext = useContext(TimerContext)
+type TResult = TCandidate & {
+  count: number
+}
+
+const ResultPage = ({ votingDataS }: IResultPage) => {
   const [loadingStudent, setLoadingStudent] = useState<boolean>(true)
-  const [votingData, setVotingData] = useState<any[]>([])
+  const [votingData, setVotingData] = useState<Record<
+    string,
+    TResult[]
+  > | null>(null)
   useEffect(() => {
     setVotingData(JSON.parse(votingDataS))
     setLoadingStudent(false)
@@ -45,72 +48,20 @@ const ResultPage = ({ votingDataS, children }: IResultPage) => {
       </div>
       <div className="mb-6 p-5">
         <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">PRESIDENT</h1>
-          <div className="grid gap-y-5  md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[0].map((d: any, i: number) => (
-              <ResultCard key={i} candidate={d} />
-            ))}
-          </div>
-        </div>
-
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            GENERAL SECRETARY
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[1].map((d: any, i: number) => (
-              <ResultCard key={i} candidate={d} />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            ASST. GENERAL SECRETARY
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[2].map((d: any, i: number) => (
-              <ResultCard key={i} candidate={d} />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            WELFARE SECRETARY
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[3].map((d: any, i: number) => (
-              <ResultCard key={i} candidate={d} />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            FINANCIAL SECRETARY
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[4].map((d: any, i: number) => (
-              <ResultCard key={i} candidate={d} />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            PUBLIC RELATION OFFICER(P.R.O)
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[5].map((d: any, i: number) => (
-              <ResultCard key={i} candidate={d} />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            STUDENT REPRESENTATIVE COUNCIL(SRC)
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[6].map((d: any, i: number) => (
-              <ResultCard key={i} candidate={d} />
-            ))}
+          <div className="flex flex-col gap-12 text-center">
+            {votingData &&
+              Object.keys(votingData).map((post) => (
+                <div key={post}>
+                  <h1 className="my-6 text-xl font-bold text-gray-600">
+                    {post}
+                  </h1>
+                  <div className="flex flex-col gap-5 md:flex-row md:flex-wrap md:justify-center">
+                    {votingData[post].map((candidate) => (
+                      <ResultCard key={candidate.name} candidate={candidate} />
+                    ))}
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>
@@ -125,26 +76,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   votingData = await Vote.find()
 
-  if (votingData.length > 0) {
-    const president = votingData.filter((d) => d.post === POSTS_CONST.PRESIDENT)
-    const genSec = votingData.filter(
-      (d) => d.post === POSTS_CONST.GENERAL_SECRETARY
-    )
-    const aGenSec = votingData.filter(
-      (d) => d.post === POSTS_CONST.ASST_GENERAL_SECRETARY
-    )
-    const welfare = votingData.filter(
-      (d) => d.post === POSTS_CONST.WELFARE_SECRETARY
-    )
-    const fin = votingData.filter(
-      (d) => d.post === POSTS_CONST.FINANCIAL_SECRETARY
-    )
-    const pro = votingData.filter((d) => d.post === POSTS_CONST.PRO)
-
-    const src = votingData.filter((d) => d.post === POSTS_CONST.SRC)
-
-    votingData = [president, genSec, aGenSec, welfare, fin, pro, src]
-  }
+  votingData = votingData.reduce((prev, data) => {
+    const details = {
+      name: data.name,
+      matric: data.matric,
+      nick_name: data.nick_name,
+      department: data.department,
+      post: data.post,
+      count: data.count,
+    }
+    if (Object.keys(prev).includes(data.post)) {
+      prev[data.post].push(details)
+    } else {
+      prev[data.post] = [details]
+    }
+    return prev
+  }, {})
 
   return {
     props: {
