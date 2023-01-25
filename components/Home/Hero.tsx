@@ -1,8 +1,4 @@
-import Image from 'next/image'
-import React, { useContext, useEffect, useState } from 'react'
-import { timeElapsed } from '../../libs/timer'
-import { TimerContext } from '../../store'
-import VoteEnd from '../Card/VoteEnd'
+import React, { useState } from 'react'
 import LoginForm from '../Form/LoginForm'
 import OTPForm from '../Form/OTPForm'
 
@@ -10,10 +6,9 @@ export type TShow = 'otp' | 'login'
 
 const Hero = () => {
   const [show, setShow] = useState<TShow>('login')
-  const timerContext = useContext(TimerContext)
 
   return (
-    <section className="center-auto mt-20 flex flex-col items-center justify-center space-y-5 md:mt-32  md:flex-row md:space-y-0">
+    <section className="center-auto mt-14 flex flex-col items-center justify-center space-y-5 md:mt-20  md:flex-row md:space-y-0">
       <div className="flex max-w-sm flex-col space-y-6 p-5">
         <h1 className="text-center text-4xl font-bold uppercase text-primary md:text-left md:text-5xl">
           Voting Made Simple
@@ -24,9 +19,7 @@ const Hero = () => {
         </p>
       </div>
       <div className="flex h-44 flex-1 flex-shrink-0 items-center justify-center md:h-full">
-        {timerContext?.timeExpired ? (
-          <VoteEnd />
-        ) : show === 'otp' ? (
+        {show === 'otp' ? (
           <OTPForm setShow={setShow} />
         ) : (
           <LoginForm setShow={setShow} />

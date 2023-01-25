@@ -39,7 +39,6 @@ const Timer = () => {
   useEffect(() => {
     let inter = setInterval(() => {
       const [hours, minutes, seconds, done, distance] = timeElapsed()
-      console.log(distance)
       if (timerContext?.timeExpired) {
         clearInterval(inter)
       }
@@ -58,30 +57,22 @@ const Timer = () => {
         setSecs(seconds as number)
       }
     }, 1000)
-    // if (timerContext?.timeExpired) clearInterval(inter)
     return () => {
       clearInterval(inter)
     }
   }, [timerContext])
 
+  const formatTicks = (tick: number): string => String(tick).padStart(2, '0')
   return (
     <>
-      {/* <Countdown
-        //   date={new Date(2022, 2, 16, 17, 0, 0, 0)}
-        date={1647426960000}
-        onComplete={() => timerContext?.setTimeExpired(true)}
-        renderer={renderer}
-        className="text-center"
-      /> */}
-
-      <div className="flex flex-col text-center text-4xl font-black text-gray-600">
+      <div className="flex flex-col pt-8 text-center text-4xl font-black text-gray-600">
         <span className="text-xl font-light"> Time Left</span>{' '}
         <span>
           {timerContext?.timeExpired ? (
             <VoteEnd />
           ) : (
             <span>
-              {hours}:{mins}:{secs}
+              {formatTicks(hours)}:{formatTicks(mins)}:{formatTicks(secs)}
             </span>
           )}
         </span>

@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import toast from 'react-hot-toast'
 import { FaUserGraduate, FaUserTag } from 'react-icons/fa'
 import { IoMdKey } from 'react-icons/io'
 
 import api, { errorMessage } from '../../libs/fechter'
+import { TimerContext } from '../../store'
 import { TShow } from '../Home/Hero'
 import Spinner from '../Loader/Spinner'
 
@@ -19,6 +20,7 @@ export interface ILoginForm {
 }
 
 const LoginForm = ({ setShow }: ILoginForm) => {
+  const timerContext = useContext(TimerContext)
   const router = useRouter()
   const [userData, setUserData] = useState<IUserData>({
     matric: '',
@@ -109,14 +111,20 @@ const LoginForm = ({ setShow }: ILoginForm) => {
         </div>
 
         <div className="flex items-center justify-center">
-          <button
-            disabled={loading}
-            className="flex items-center justify-center space-x-2 rounded-full bg-primary px-5 py-2 text-white transition duration-300 hover:bg-primary/80 disabled:pointer-events-none disabled:cursor-none"
-            type="submit"
-          >
-            {loading && <Spinner />}
-            <span>Login</span>
-          </button>
+          {timerContext?.timeExpired ? (
+            <div className="p-5 text-center text-xl font-bold text-red-700">
+              <p className="">VOTING HAS ENDED</p>
+            </div>
+          ) : (
+            <button
+              disabled={loading}
+              className="flex items-center justify-center space-x-2 rounded-full bg-primary px-5 py-2 text-white transition duration-300 hover:bg-primary/80 disabled:pointer-events-none disabled:cursor-none"
+              type="submit"
+            >
+              {loading && <Spinner />}
+              <span>Login</span>
+            </button>
+          )}
         </div>
         {/* <div className="flex cursor-pointer items-center justify-center">
           <span
