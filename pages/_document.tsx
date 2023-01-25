@@ -115,7 +115,7 @@ class MyDocument extends Document {
           />
         </Head>
         <body
-          className="font-exo h-screen w-screen bg-gradient-to-br from-primary/10 to-yellow-200/20 bg-no-repeat"
+          className="font-exo min-h-screen w-screen bg-gradient-to-br from-primary/10 to-yellow-200/20 bg-no-repeat"
           data-aos-duration="1000"
         >
           <Main />

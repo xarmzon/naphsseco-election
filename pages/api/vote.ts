@@ -18,10 +18,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .status(HTTP_REQUEST_CODES.BAD_REQUEST)
           .json({ msg: 'Sorry! Voting has ended' })
 
-      const { votes, token } = req.body
+      const { votes, token }: { votes: string[]; token: string } = req.body
       let canVote = true
       let msg: string = ''
       let studentData: any
+      if (!votes || votes?.length === 0)
+        return res
+          .status(HTTP_REQUEST_CODES.BAD_REQUEST)
+          .json({ msg: 'Votes data missing' })
+
       try {
         const tokenData: any = verify(token, process.env.SECRET_KEY!)
 
@@ -43,44 +48,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(HTTP_REQUEST_CODES.BAD_REQUEST).json({ msg })
 
       try {
-        const pt = await Vote.findOne({ matric: votes.pt })
-        if (pt) {
-          pt.count = pt.count + 1
-          await pt.save()
-        }
-        const gs = await Vote.findOne({ matric: votes.gs })
-        if (gs) {
-          gs.count = gs.count + 1
-          await gs.save()
-        }
-        const ags = await Vote.findOne({ matric: votes.ags })
-        if (ags) {
-          ags.count = ags.count + 1
-          await ags.save()
-        }
-        const ws = await Vote.findOne({ matric: votes.ws })
-        if (ws) {
-          ws.count = ws.count + 1
-          await ws.save()
-        }
-        const fn = await Vote.findOne({ matric: votes.fn })
-        if (fn) {
-          fn.count = fn.count + 1
-          await fn.save()
-        }
-        const pr = await Vote.findOne({ matric: votes.pr })
-        if (pr) {
-          pr.count = pr.count + 1
-          await pr.save()
-        }
-
-        votes.src.forEach(async (p: any) => {
-          const d = await Vote.findOne({ matric: p })
-          if (d) {
-            d.count = d.count + 1
-            await d.save()
-          }
-        })
+        await Promise.all(
+          votes.map(
+            async (matric) =>
+              await Vote.updateOne({ matric }, { $inc: { count: 1 } })
+          )
+        )
 
         studentData.voted = true
         await studentData.save()

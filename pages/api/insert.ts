@@ -1,10 +1,6 @@
 import { postsData } from './../../data/posts'
 import { connectDB } from './../../libs/connectDB'
-import {
-  HTTP_REQUEST_CODES,
-  HTTP_RESPONSE_MSG,
-  POSTS_CONST,
-} from './../../libs/constants'
+import { HTTP_REQUEST_CODES, HTTP_RESPONSE_MSG } from './../../libs/constants'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Vote from '../../schema/Vote'
 import Student from '../../schema/Students'
@@ -20,43 +16,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case 'candidates':
           try {
             await Vote.deleteMany({})
-
-            // const data = [
-            //   ...postsData.PRESIDENT.map((d) => ({
-            //     ...d,
-            //     post: POSTS_CONST.PRESIDENT,
-            //   })),
-            //   ...postsData.GENERAL_SECRETARY.map((d) => ({
-            //     ...d,
-            //     post: POSTS_CONST.GENERAL_SECRETARY,
-            //   })),
-            //   postsData.ASST_GENERAL_SECRETARY.map((d) => ({
-            //     ...d,
-            //     post: POSTS_CONST.ASST_GENERAL_SECRETARY,
-            //   })),
-            //   ...postsData.WELFARE_SECRETARY.map((d) => ({
-            //     ...d,
-            //     post: POSTS_CONST.WELFARE_SECRETARY,
-            //   })),
-            //   ...postsData.FINANCIAL_SECRETARY.map((d) => ({
-            //     ...d,
-            //     post: POSTS_CONST.FINANCIAL_SECRETARY,
-            //   })),
-            //   postsData.PRO.map((d) => ({
-            //     ...d,
-            //     post: POSTS_CONST.PRO,
-            //   })),
-            //   ...postsData.SRC.map((d) => ({
-            //     ...d,
-            //     post: POSTS_CONST.SRC,
-            //   })),
-            // ]
             const data = Object.keys(postsData)
               .map((post) => {
                 return postsData[post as keyof typeof postsData].map((data) => {
                   return {
                     ...data,
-                    post,
+                    post: post
+                      .replaceAll('__bo__', '(')
+                      .replaceAll('__bc__', ')')
+                      .replaceAll('_', ' '),
                   }
                 })
               })
@@ -64,9 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 prev.push(...post)
                 return prev
               }, [])
-
-            const createdData = await Vote.create(data)
-            console.log(createdData)
+            await Vote.create(data)
             return res.status(HTTP_REQUEST_CODES.CREATED).json({
               msg: 'CANDIDATES INSERTED SUCCESSFULLY',
             })
@@ -87,16 +53,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               .json({ msg: HTTP_RESPONSE_MSG.BAD_REQUEST })
 
           try {
-            console.log(students)
+            console.log(students, deleteOld)
             deleteOld && (await Student.deleteMany({}))
 
-            const studentsData = students.map((d: any) => ({
-              matric: d[0].toUpperCase(),
-              name: d[1],
+            const studentsData = students.map((d: Array<string>) => ({
+              matric: String(d[0]).toUpperCase().trim(),
+              name: String(d[1])
+                .toUpperCase()
+                .split(',')
+                .map((t: string) => t.trim())
+                .join(' '),
+              department: d[2]?.trim()?.toUpperCase() ?? 'UNKNOWN',
             }))
 
             console.log(studentsData)
-            // await Student.create(studentsData)
+            await Student.create(studentsData)
 
             return res.status(HTTP_REQUEST_CODES.CREATED).json({
               msg: 'STUDENTS INSERTED SUCCESSFULLY',

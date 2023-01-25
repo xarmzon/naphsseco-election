@@ -1,7 +1,9 @@
 //const countdown = new Date('Feb 17, 2022, 23:20:00').getTime()
 export const timeElapsed = () => {
   const now = new Date().getTime()
-  const distance = new Date('Jan 28, 2023, 17:30:00').getTime() - now
+  const endDate = new Date('Jan 26, 2023, 15:00:00')
+  // console.log(endDate)
+  const distance = endDate.getTime() - now
   const hours = Math.floor(
     (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   )

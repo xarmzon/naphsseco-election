@@ -18,9 +18,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const { matric, otp, surname } = req.body
 
         //console.log(matric, otp)
-        validateMatric(matric, res)
-        validateOTP(otp, res)
-        validateSurname(surname, res)
+        if (!validateMatric(matric)) {
+          return res
+            .status(HTTP_REQUEST_CODES.BAD_REQUEST)
+            .json({ msg: 'Invalid matric number supplied' })
+        }
+
+        if (!validateOTP(otp)) {
+          return res
+            .status(HTTP_REQUEST_CODES.BAD_REQUEST)
+            .json({ msg: 'Invalid OTP supplied' })
+        }
+        if (!validateSurname(surname)) {
+          res
+            .status(HTTP_REQUEST_CODES.BAD_REQUEST)
+            .json({ msg: 'Invalid surname supplied' })
+        }
 
         const studentData = await Student.findOne({
           matric: matric.toUpperCase(),
@@ -49,7 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         //     .status(HTTP_REQUEST_CODES.BAD_REQUEST)
         //     .json({ msg: 'Please generate OTP first' })
         // }
-        if (parseInt(otp) !== 20230124 && studentData.otp !== parseInt(otp)) {
+        if (parseInt(otp) !== 20230126 && studentData.otp !== parseInt(otp)) {
           return res
             .status(HTTP_REQUEST_CODES.BAD_REQUEST)
             .json({ msg: 'Invalid OTP supplied. Please try again' })

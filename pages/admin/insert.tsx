@@ -7,6 +7,7 @@ import { NextSeo } from 'next-seo'
 
 const InsertUsers = () => {
   const [loading, setLoading] = useState<boolean>(false)
+  const [deleteOld, setDeleteOld] = useState<boolean>(false)
   const [studentsData, setStudentsData] = useState<FileList | null>(null)
   const fileRef = useRef<HTMLInputElement | null>(null)
 
@@ -34,15 +35,13 @@ const InsertUsers = () => {
     try {
       toast.loading('Loading..........')
       setLoading(true)
-      console.log('before')
-      console.log(studentsData[0])
       const sData = await readXlsxFile(studentsData[0])
-      console.log(sData)
       const {
         data: { msg },
       } = await api.post('insert', {
         insertType: 'students',
         students: sData,
+        deleteOld,
       })
       toast.dismiss()
       toast.success(msg)
@@ -90,6 +89,15 @@ const InsertUsers = () => {
               >
                 Select Student Files
               </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <label htmlFor="deleteOld">Delete Current Data</label>
+              <input
+                type="checkbox"
+                className="text-primary accent-primary/80 outline-primary ring-primary checked:bg-primary checked:ring-primary focus:ring-primary/50"
+                onChange={() => setDeleteOld((prev) => !prev)}
+                checked={deleteOld}
+              />
             </div>
             <div>
               <input

@@ -11,6 +11,7 @@ const studentSchema = new Schema<IStudent>(
     matric: {
       type: String,
       required: true,
+      unique: true,
     },
     nick_name: {
       type: String,

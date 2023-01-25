@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import Layout from '../components/layout/Layout'
 import Spinner from '../components/Loader/Spinner'
 import Timer from '../components/Timer'
@@ -15,6 +15,7 @@ import Link from 'next/link'
 import { TimerContext } from '../store'
 import VoteEnd from '../components/Card/VoteEnd'
 import { NextSeo } from 'next-seo'
+import StudentCard, { TStudent } from '../components/Card/StudentCard'
 
 export interface IVotingPage {
   children?: React.ReactNode
@@ -22,37 +23,38 @@ export interface IVotingPage {
   votingDataS: any
   msg: string
   token: string
+  studentData: string
 }
 
-export interface IStudentVotes {
-  pt: string
-  gs: string
-  ags: string
-  ws: string
-  fn: string
-  pr: string
-  src: any[]
+export type TCandidate = {
+  name: string
+  matric: string
+  nick_name: string
+  department: string
+  post: string
 }
 
-const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
+const VotingPage = ({
+  canVote,
+  votingDataS,
+  msg,
+  token,
+  studentData,
+}: IVotingPage) => {
   const timerContext = useContext(TimerContext)
-
   const [loadingStudent, setLoadingStudent] = useState<boolean>(true)
   const [submitting, setSubmitting] = useState<boolean>(false)
   const [submitted, setSubmitted] = useState<boolean>(false)
-  const [votingData, setVotingData] = useState<any[]>([])
+  const [votingData, setVotingData] = useState<Record<
+    string,
+    TCandidate[]
+  > | null>(null)
   const [showError, setShowError] = useState<boolean>(false)
   const [error, setError] = useState<string>('false')
-
-  const [studentVotes, setStudentVotes] = useState<IStudentVotes>({
-    pt: '',
-    gs: '',
-    ags: '',
-    ws: '',
-    fn: '',
-    pr: '',
-    src: [],
-  })
+  const [student, setStudent] = useState<TStudent>(() =>
+    JSON.parse(studentData)
+  )
+  const [studentVotes, setStudentVotes] = useState<string[]>([])
 
   useEffect(() => {
     if (!canVote) {
@@ -64,15 +66,29 @@ const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
     setLoadingStudent(false)
   }, [canVote, msg, votingDataS])
 
+  useEffect(() => {
+    if (studentData) {
+      setStudent(JSON.parse(studentData))
+    }
+  }, [studentData])
   const processVote = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(studentVotes)
+    // console.log(studentVotes)
+    const formData = new FormData(e.target as HTMLFormElement)
+    const parsedFormData: string[] = []
+    for (let key of formData.keys()) {
+      parsedFormData.push(formData.get(key) as string)
+    }
+    if (parsedFormData.length === 0) {
+      toast.error('Please Vote at least a single candidate')
+      return
+    }
     setSubmitting(true)
     try {
       const {
         data: { msg },
       } = await api.post('vote', {
-        votes: studentVotes,
+        votes: parsedFormData,
         token,
       })
       setSubmitted(true)
@@ -113,7 +129,8 @@ const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
   if (loadingStudent || submitting) {
     return (
       <Layout>
-        <div className="flex h-[calc(100vh-150px)] items-center justify-center">
+        <div className="flex h-[calc(100vh-150px)] flex-col items-center justify-center gap-8">
+          {student && <StudentCard student={student} />}
           <Spinner size="large" bg="primary" showLoadingText />
         </div>
       </Layout>
@@ -122,10 +139,16 @@ const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
   if (showError) {
     return (
       <Layout>
-        <div className="flex h-[calc(100vh-150px)] items-center justify-center">
+        <div className="flex h-[calc(100vh-150px)] flex-col items-center justify-center gap-5">
+          {student && <StudentCard student={student} />}
           <h1 className="text-center text-xl font-bold text-red-600">
             {error}
           </h1>
+          <Link href="/">
+            <a className="flex cursor-pointer items-center justify-center rounded-full border border-primary/60 px-7 py-2 text-lg text-primary/70">
+              Homepage
+            </a>
+          </Link>
         </div>
       </Layout>
     )
@@ -136,124 +159,24 @@ const VotingPage = ({ canVote, votingDataS, msg, token }: IVotingPage) => {
       <div className="flex flex-col justify-center">
         <Timer />
       </div>
+      <StudentCard student={student} />
       <form className="p-5" onSubmit={processVote}>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">PRESIDENT</h1>
-          <div className="grid gap-y-5  md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[0].map((d: any, i: number) => (
-              <Candidate
-                key={i}
-                voteCandidate={(m) =>
-                  setStudentVotes((prev) => ({ ...prev, pt: m }))
-                }
-                candidate={d}
-              />
+        <div className="flex flex-col gap-12 text-center">
+          {votingData &&
+            Object.keys(votingData).map((post) => (
+              <div key={post}>
+                <h1 className="my-6 text-xl font-bold text-gray-600">{post}</h1>
+                <div className="flex flex-col gap-5 md:flex-row md:flex-wrap">
+                  {votingData[post].map((candidate) => (
+                    <Candidate
+                      key={candidate.name}
+                      voteCandidate={(m) => {}}
+                      candidate={candidate}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
-          </div>
-        </div>
-
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            GENERAL SECRETARY
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[1].map((d: any, i: number) => (
-              <Candidate
-                voteCandidate={(m) =>
-                  setStudentVotes((prev) => ({ ...prev, gs: m }))
-                }
-                key={i}
-                candidate={d}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            ASST. GENERAL SECRETARY
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[2].map((d: any, i: number) => (
-              <Candidate
-                voteCandidate={(m) =>
-                  setStudentVotes((prev) => ({ ...prev, ags: m }))
-                }
-                key={i}
-                candidate={d}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            WELFARE SECRETARY
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[3].map((d: any, i: number) => (
-              <Candidate
-                voteCandidate={(m) =>
-                  setStudentVotes((prev) => ({ ...prev, ws: m }))
-                }
-                key={i}
-                candidate={d}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            FINANCIAL SECRETARY
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[4].map((d: any, i: number) => (
-              <Candidate
-                voteCandidate={(m) =>
-                  setStudentVotes((prev) => ({ ...prev, fn: m }))
-                }
-                key={i}
-                candidate={d}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            PUBLIC RELATION OFFICER(P.R.O)
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[5].map((d: any, i: number) => (
-              <Candidate
-                voteCandidate={(m) =>
-                  setStudentVotes((prev) => ({ ...prev, pr: m }))
-                }
-                key={i}
-                candidate={d}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="text-center">
-          <h1 className="my-6 text-xl font-bold text-gray-600">
-            STUDENT REPRESENTATIVE COUNCIL(SRC)
-          </h1>
-          <div className="grid gap-y-5 md:grid-cols-2 md:gap-x-8 xl:grid-cols-4">
-            {votingData[6].map((d: any, i: number) => (
-              <Candidate
-                voteCandidate={(m) =>
-                  setStudentVotes((prev) => {
-                    const n = [...prev.src]
-                    n.push(m)
-                    return {
-                      ...prev,
-                      src: n,
-                    }
-                  })
-                }
-                key={i}
-                candidate={d}
-              />
-            ))}
-          </div>
         </div>
         <div className="mt-8 flex items-center justify-center text-center">
           <button
@@ -275,6 +198,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let msg: string = ''
   const token: string = query?.token as string
   let canVote = true
+  let studentData = null
   if (!token) {
     canVote = false
     msg = 'No Token Supplied'
@@ -282,7 +206,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
       const tokenData: any = verify(token, process.env.SECRET_KEY!)
 
-      const studentData = await Student.findOne({
+      studentData = await Student.findOne({
         matric: tokenData?.matric?.toUpperCase(),
       })
       if (!studentData || studentData?.otp !== tokenData.otp) {
@@ -302,34 +226,32 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (canVote) {
     votingData = await Vote.find()
 
-    if (votingData.length > 0) {
-      const president = votingData.filter(
-        (d) => d.post === POSTS_CONST.PRESIDENT
-      )
-      const genSec = votingData.filter(
-        (d) => d.post === POSTS_CONST.GENERAL_SECRETARY
-      )
-      const aGenSec = votingData.filter(
-        (d) => d.post === POSTS_CONST.ASST_GENERAL_SECRETARY
-      )
-      const welfare = votingData.filter(
-        (d) => d.post === POSTS_CONST.WELFARE_SECRETARY
-      )
-      const fin = votingData.filter(
-        (d) => d.post === POSTS_CONST.FINANCIAL_SECRETARY
-      )
-      const pro = votingData.filter((d) => d.post === POSTS_CONST.PRO)
-
-      const src = votingData.filter((d) => d.post === POSTS_CONST.SRC)
-
-      votingData = [president, genSec, aGenSec, welfare, fin, pro, src]
-    }
+    votingData = votingData.reduce((prev, data) => {
+      if (Object.keys(prev).includes(data.post)) {
+        const details = {
+          name: data.name,
+          matric: data.matric,
+          nick_name: data.nick_name,
+          department: data.department,
+          post: data.post,
+        }
+        prev[data.post].push(details)
+      } else {
+        prev[data.post] = [data]
+      }
+      return prev
+    }, {})
   }
   return {
     props: {
       canVote,
       msg,
       token,
+      studentData: JSON.stringify({
+        name: studentData?.name,
+        matric: studentData?.matric,
+        department: studentData?.department,
+      }),
       votingDataS: JSON.stringify(votingData),
     },
   }

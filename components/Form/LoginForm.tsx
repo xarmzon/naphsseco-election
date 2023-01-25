@@ -82,6 +82,7 @@ const LoginForm = ({ setShow }: ILoginForm) => {
             placeholder="Matriculation Number"
             name="matric"
             id="matric"
+            maxLength={10}
           />
         </div>
         <div className="form flex items-center space-x-3 rounded-full border-[2px] py-2 px-3">
@@ -102,8 +103,8 @@ const LoginForm = ({ setShow }: ILoginForm) => {
             value={userData.otp}
             onChange={(e) => handledChange(e.target.name, e.target.value)}
             className="flex-1 flex-shrink-0 border-none bg-transparent outline-none focus:ring-0"
-            type="text"
-            inputMode="numeric"
+            type="password"
+            // inputMode="numeric"
             placeholder="Enter the OTP"
             name="otp"
             id="otp"
