@@ -1,7 +1,7 @@
 //const countdown = new Date('Feb 17, 2022, 23:20:00').getTime()
 export const timeElapsed = () => {
   const now = new Date().getTime()
-  const endDate = new Date('Jan 26, 2023, 16:00:00')
+  const endDate = new Date('Jan 26, 2023, 15:00:00')
   // console.log(endDate)
   const distance = endDate.getTime() - now
   const hours = Math.floor(
