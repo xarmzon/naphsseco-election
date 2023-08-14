@@ -115,7 +115,7 @@ const VotingPage = ({
           </h1>
           <div className="mt-4">
             <Link href="/">
-              <a className="flex cursor-pointer items-center justify-center rounded-full border border-primary/60 px-7 py-2 text-lg text-primary/70">
+              <a className="flex cursor-pointer items-center justify-center rounded-full border border-primary/60 py-2 px-7 text-lg text-primary/70">
                 Homepage
               </a>
             </Link>
@@ -143,7 +143,7 @@ const VotingPage = ({
             {error}
           </h1>
           <Link href="/">
-            <a className="flex cursor-pointer items-center justify-center rounded-full border border-primary/60 px-7 py-2 text-lg text-primary/70">
+            <a className="flex cursor-pointer items-center justify-center rounded-full border border-primary/60 py-2 px-7 text-lg text-primary/70">
               Homepage
             </a>
           </Link>
@@ -175,7 +175,7 @@ const VotingPage = ({
         <div className="mt-8 flex items-center justify-center text-center">
           <button
             disabled={submitting}
-            className="rounded-lg bg-primary px-7 py-3 text-gray-200"
+            className="rounded-lg bg-primary py-3 px-7 text-gray-200"
           >
             {submitting ? 'Submitting...' : 'Submit'}
           </button>
@@ -203,7 +203,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       studentData = await Student.findOne({
         matric: tokenData?.matric?.toUpperCase(),
       })
-      if (!studentData || studentData?.otp !== tokenData.otp) {
+      if (!studentData || studentData?.otp !== tokenData?.otp) {
         canVote = false
         msg = 'Invalid Student Data or OTP'
       } else if (studentData && studentData.voted === true) {

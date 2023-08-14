@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 .split(',')
                 .map((t: string) => t.trim())
                 .join(' '),
-              department: d[2]?.trim()?.toUpperCase() ?? 'UNKNOWN',
+              department: d?.[2]?.trim()?.toUpperCase() ?? 'UNKNOWN',
             }))
 
             console.log(studentsData)

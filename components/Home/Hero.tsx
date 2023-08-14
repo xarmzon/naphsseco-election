@@ -8,7 +8,7 @@ const Hero = () => {
   const [show, setShow] = useState<TShow>('login')
 
   return (
-    <section className="center-auto mt-14 flex flex-col items-center justify-center space-y-5 md:mt-20  md:flex-row md:space-y-0">
+    <section className="center-auto mt-14 flex flex-col items-center justify-center space-y-5 md:mt-20 md:flex-row md:space-y-0 md:pt-20 lg:pt-32">
       <div className="flex max-w-sm flex-col space-y-6 p-5">
         <h1 className="text-center text-4xl font-bold uppercase text-primary md:text-left md:text-5xl">
           Voting Made Simple
