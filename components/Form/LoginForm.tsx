@@ -70,7 +70,7 @@ const LoginForm = ({ setShow }: ILoginForm) => {
     <>
       <form
         onSubmit={processOTPForm}
-        className="relative z-10 flex flex-col space-y-10 rounded-lg bg-gradient-to-tr from-white/40 to-white/60 p-5 pt-8 shadow-lg backdrop-blur-xl md:w-[85%]"
+        className="relative z-10 flex w-full flex-col space-y-10 rounded-lg bg-gradient-to-tr from-white/40 to-white/60 p-5 pt-8 shadow-lg backdrop-blur-xl"
       >
         <div className="form flex items-center space-x-3 rounded-full border-[2px] py-2 px-3">
           <FaUserGraduate className="ml-3 h-5 w-5 text-primary" />
@@ -119,7 +119,7 @@ const LoginForm = ({ setShow }: ILoginForm) => {
           ) : (
             <button
               disabled={loading}
-              className="flex items-center justify-center space-x-2 rounded-full bg-primary px-5 py-2 text-white transition duration-300 hover:bg-primary/80 disabled:pointer-events-none disabled:cursor-none"
+              className="relative z-[10] flex items-center justify-center space-x-2 rounded-full bg-primary px-5 py-2 text-white transition duration-300 hover:bg-primary/80 disabled:pointer-events-none disabled:cursor-none"
               type="submit"
             >
               {loading && <Spinner />}

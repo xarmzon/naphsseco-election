@@ -62,14 +62,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         //     .status(HTTP_REQUEST_CODES.BAD_REQUEST)
         //     .json({ msg: 'Please generate OTP first' })
         // }
-        if (parseInt(otp) !== 20230126 && studentData.otp !== parseInt(otp)) {
+        console.log(studentData)
+        if (parseInt(otp) !== 20230819) {
           return res
             .status(HTTP_REQUEST_CODES.BAD_REQUEST)
             .json({ msg: 'Invalid OTP supplied. Please try again' })
         }
 
         return res.status(HTTP_REQUEST_CODES.OK).json({
-          msg: `Your account has been validated successfully, you're login as ${studentData.name}`,
+          msg: `Hello ${studentData.name}!, your account has been validated successfully`,
           token: sign(
             { matric, otp: studentData.otp },
             process.env.SECRET_KEY!

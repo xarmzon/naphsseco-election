@@ -2,9 +2,11 @@
 export const timeElapsed = () => {
   const now = new Date().getTime()
   // const endDate = new Date('Jan 26, 2023, 15:00:00')
-  const endDate = new Date('Aug 15, 2023, 15:00:00')
+  const endDate = new Date('Aug 19, 2023, 16:00:00')
   // console.log(endDate)
   const distance = endDate.getTime() - now
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24))
   const hours = Math.floor(
     (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   )
@@ -18,6 +20,7 @@ export const timeElapsed = () => {
   } else {
     done = false
   }
+
   // done = true
-  return [hours, minutes, seconds, done, distance]
+  return [hours, minutes, seconds, done, distance, days]
 }
