@@ -1,4 +1,4 @@
-import { postsData } from './../../data/posts_2023'
+import { postsData } from './../../data/posts_2024'
 import { connectDB } from './../../libs/connectDB'
 import { HTTP_REQUEST_CODES, HTTP_RESPONSE_MSG } from './../../libs/constants'
 import { NextApiRequest, NextApiResponse } from 'next'

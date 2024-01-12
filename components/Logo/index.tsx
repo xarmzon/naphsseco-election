@@ -19,7 +19,7 @@ const Logo = () => {
           {APP_NAME}
         </h1>
         <span className="absolute -top-1 left-10 text-[9px] md:left-12 lg:text-[11px]">
-          (2023)
+          (2024)
         </span>
       </a>
     </Link>
