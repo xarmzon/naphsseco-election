@@ -1,6 +1,7 @@
 export const timeElapsed = () => {
   const now = new Date().getTime()
-  const endDate = new Date('Jan 15, 2024, 14:45:00')
+  const endDate = new Date(process.env.NEXT_PUBLIC_END_DATE!)
+  console.log({ endDate, p: process.env.NEXT_PUBLIC_END_DATE! })
   const distance = endDate.getTime() - now
 
   const days = Math.floor(distance / (1000 * 60 * 60 * 24))
