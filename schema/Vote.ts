@@ -1,5 +1,5 @@
-import { IDataObject } from '../data/posts'
 import { Schema, model, models } from 'mongoose'
+import { IDataObject } from '../data/posts_2024'
 
 export interface IVoting extends IDataObject {
   count: number
@@ -23,6 +23,9 @@ const voteSchema = new Schema<IVoting>(
     department: {
       type: String,
       required: true,
+    },
+    level: {
+      type: String,
     },
     count: {
       type: Number,

@@ -32,6 +32,7 @@ export type TCandidate = {
   nick_name: string
   department: string
   post: string
+  level?: string
 }
 
 const VotingPage = ({
@@ -227,6 +228,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         nick_name: data.nick_name,
         department: data.department,
         post: data.post,
+        level: data.level,
       }
       if (Object.keys(prev).includes(data.post)) {
         prev[data.post].push(details)

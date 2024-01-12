@@ -27,6 +27,11 @@ const Candidate = ({ candidate, type = 'radio' }: ICandidate) => {
           {candidate.nick_name}
         </h1>
         <p className="text-xs text-gray-400">{candidate.department}</p>
+        {candidate?.level && (
+          <p className="text-xs text-gray-400">
+            <span className="">Level:</span> {candidate.level}L
+          </p>
+        )}
         <input
           type={type}
           className="h-6 w-6 text-primary ring-primary focus:ring-primary"
