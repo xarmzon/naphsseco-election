@@ -1,9 +1,10 @@
 import Image from 'next/image'
 import React from 'react'
 import { POSTS_CONST } from '../../libs/constants'
+import { TResult } from '../../pages/pollResults'
 
 export interface IResultCard {
-  candidate: any
+  candidate: TResult
 }
 
 const ResultCard = ({ candidate }: IResultCard) => {
@@ -25,6 +26,11 @@ const ResultCard = ({ candidate }: IResultCard) => {
           {candidate.nick_name}
         </h1>
         <p className="text-xs text-gray-400">{candidate.department}</p>
+        {candidate?.level && (
+          <p className="text-xs text-gray-400">
+            <span className="">Level:</span> {candidate.level}L
+          </p>
+        )}
         <div className="flex space-x-4 text-2xl font-black text-slate-900">
           <span>Votes:</span>
           <span>{candidate.count}</span>

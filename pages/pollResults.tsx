@@ -13,7 +13,7 @@ export interface IResultPage {
   votingDataS: any
 }
 
-type TResult = TCandidate & {
+export type TResult = TCandidate & {
   count: number
 }
 
@@ -83,6 +83,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       nick_name: data.nick_name,
       department: data.department,
       post: data.post,
+      level: data.level,
       count: data.count,
     }
     if (Object.keys(prev).includes(data.post)) {
